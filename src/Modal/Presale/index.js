@@ -101,18 +101,17 @@ const Presale = (props) => {
                             try {
                                 hideModel();
                                 if (id == 1){
-                                    let nftTxn = await PresaleContract.methods.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x297A580ccF736D5535401B9C8159F6F3e663949F"], walletAddress,deadline,
-                                        {
-                                            value: ethers.utils.parseUnits(ethAmount.toString(), 'ether')._hex,
-                                        }        
-                                    )
-                                    
+                                    let nftTxn = await PresaleContract.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x297A580ccF736D5535401B9C8159F6F3e663949F"], walletAddress,deadline,
+                                    {
+                                        value: ethers.utils.parseUnits(ethAmount.toString(), 'ether')._hex,
+                                    }        
+                                    ); 
                                     await nftTxn.wait();
                                     getChangeVal(1);
                                     // window.alert("You recieved "+sportAmount + "SPORT");
                                 }
                                 else{
-                                    let nftTxn = await PresaleContract.methods.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x630C101AD79971AAC25Aed0A3bE9bcf9bD49fA08"], walletAddress,deadline,
+                                    let nftTxn = await PresaleContract.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x630C101AD79971AAC25Aed0A3bE9bcf9bD49fA08"], walletAddress,deadline,
                                     {
                                         value: ethers.utils.parseUnits(ethAmount.toString(), 'ether')._hex,
                                     }        
@@ -195,7 +194,52 @@ const Presale = (props) => {
             
             } 
             else{
-
+                const prov = new WalletConnectProvider({
+                    infuraId: "6efd85c5e3a04a59b791e862098cc39a",
+                    qrcodeModalOptions: {
+                      mobileLinks: ["metamask"],
+                    },
+                  });
+                  const addressMobile = await prov.enable();
+                  var web3Window = new Web3(prov);
+                  const chainIDBuffer = await web3Window.eth.net.getId();                
+                   
+                    
+                    if(addressMobile.length > 0 ){
+                        
+                        if(chainIDBuffer == 3){                       
+                            
+                            var tokenPriceContract = new web3Window.eth.Contract(tokenPriceABI,tokenPriceAddress);
+                            
+                            if(id == 1){
+                                
+                                if(val !=0){
+                                    tokenPriceContract.methods.getETHPriceUsingAmount(sportTokenAddress, (val*10**18).toString()).call(function (err, res) {
+                                        setSportAmount(String(res/(10**9)));
+                                        
+                                    });
+                                }
+                                else{
+                                    setSportAmount(0);
+                                }
+                                
+                                
+                            }
+                            else{
+                                if(val !=0){
+                                    tokenPriceContract.methods.getETHPriceUsingAmount(esgTokenAddress, (val*10**18).toString()).call(function (err, res) {
+                                        setSportAmount(String(res/(10**9)));
+                                        
+                                    });
+                                }
+                                else{
+                                    setSportAmount(0);
+                                }
+                                
+                            }
+                        
+                        }          
+                    }
             }
         } catch (err) {
             return {
