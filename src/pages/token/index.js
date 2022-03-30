@@ -81,7 +81,7 @@ const Token = () => {
                         });
                         tokenPriceContract.methods.getPrice(esgTokenAddress).call(function (err, res) {
                             initialData[0].totalPrice = String(res[0] * res[2] / (res[1]*10**6));
-                            initialData[0].ethPrice = String(10**18/res[0]);
+                            //initialData[0].ethPrice = String(10**18/res[0]);
                             //console.log(initialData[1].ethPrice);
                             setEsgPrice(String(res[0] * res[2] / (res[1]*10**6)));
                         });
@@ -114,6 +114,69 @@ const Token = () => {
                 } 
                 
                 
+            }
+            else{
+                const prov = new WalletConnectProvider({
+                    infuraId: "6efd85c5e3a04a59b791e862098cc39a",
+                    qrcodeModalOptions: {
+                      mobileLinks: ["metamask"],
+                    },
+                  });
+                  const addressMobile = await prov.enable();
+                var web3 = new Web3(prov);
+                const chainIDBuffer = await web3.eth.net.getId();
+                if(addressMobile.length > 0){
+                    if(chainIDBuffer == 3){
+                        
+                        var sportContract = new web3.eth.Contract(minABI, sportTokenAddress);
+                        var esgContract = new web3.eth.Contract(minABI, esgTokenAddress);
+                        var tokenPriceContract = new web3.eth.Contract(tokenPriceABI,tokenPriceAddress);
+                        tokenPriceContract.methods.getPrice(sportTokenAddress).call(function (err, res) {
+                            initialData[1].totalPrice = String(res[0] * res[2] / (res[1]*10**6));
+                            
+                            //console.log(initialData[1].ethPrice);
+                            setSportPrice(String(res[0] * res[2] / (res[1]*10**6)));
+                        });
+                        tokenPriceContract.methods.getETHPrice(sportTokenAddress).call(function (err, res) {
+                            
+                            initialData[1].ethPrice = String(res/(10**9));
+                            setEthSportPrice(String(res/(10**9)));
+                            //console.log(initialData[1].ethPrice);
+                            
+                        });
+                        tokenPriceContract.methods.getPrice(esgTokenAddress).call(function (err, res) {
+                            initialData[0].totalPrice = String(res[0] * res[2] / (res[1]*10**6));
+                            //initialData[0].ethPrice = String(10**18/res[0]);
+                            //console.log(initialData[1].ethPrice);
+                            setEsgPrice(String(res[0] * res[2] / (res[1]*10**6)));
+                        });
+                        tokenPriceContract.methods.getETHPrice(esgTokenAddress).call(function (err, res) {
+                            
+                            initialData[0].ethPrice = String(res/(10**9));
+                            setEthEsgPrice(String(res/(10**9)));
+                            //console.log(initialData[1].ethPrice);
+                            
+                        });
+                        sportContract.methods.balanceOf(addressMobile[0]).call(function (err, res) {
+                        if(res.length>7){
+                            initialData[1].balance = String(parseInt(String(res).substring(0,res.length-7))/100);
+                            setSportBalance(String(parseInt(String(res).substring(0,res.length-7))/100));
+                        }
+                        else{
+                            setSportBalance("0.00");
+                        }              
+                        });
+                        esgContract.methods.balanceOf(addressMobile[0]).call(function (err, res) {
+                        if(res.length>7){
+                            initialData[0].balance = String(parseInt(String(res).substring(0,res.length-7))/100);
+                            setEsgBalance(String(parseInt(String(res).substring(0,res.length-7))/100));
+                        }
+                        else{
+                            setEsgBalance("0.00");
+                        }              
+                        });    
+                    }          
+                }
             }  
         } catch (err) {
             return {

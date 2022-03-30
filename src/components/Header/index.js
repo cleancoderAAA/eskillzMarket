@@ -69,6 +69,30 @@ const Header = ({getAddress}) => {
           }         
         
       } 
+      else{
+        const prov = new WalletConnectProvider({
+          infuraId: "6efd85c5e3a04a59b791e862098cc39a",
+          qrcodeModalOptions: {
+            mobileLinks: ["metamask"],
+          },
+        });
+        const addressMobile = await prov.enable();
+        var web3Window = new Web3(prov);
+        const chainIDBuffer = await web3Window.eth.net.getId();
+        if(addressMobile.length > 0){
+          setAdress(addressMobile[0]);
+          if(chainIDBuffer == 3){
+            setNetName("");  
+            web3Window.eth.getBalance(addressMobile[0], (err, balanceOf) => {
+              let balETH = ethers.utils.formatUnits(balanceOf, 'ether');        
+              setBalance(String(balETH).substring(0, 6) + " ETH");
+            });           
+          }
+          else{  
+            setNetName("Wrong NET(DisConnect)");  
+          }
+        }     
+      }
     } catch (err) {
       return {
         address: ""        
