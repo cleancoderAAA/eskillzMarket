@@ -294,12 +294,7 @@ function HomePage() {
               params: [{ chainId: "0x"+chainId.toString(16) }],
             });
             if(address== ""){
-              await prov.request({
-                method: "wallet_requestPermissions",
-                params: [{
-                    eth_accounts: {}
-                }]
-              });
+              
               if(addressMobile.length > 0){
                 setAdress(addressMobile[0]);
                 setNetName("");
@@ -318,10 +313,12 @@ function HomePage() {
               }
             }
             else{
+
               setAdress("");
               setNetName("");
               setBalance("");
               setSportBalance("");  
+              await provider.disconnect();
             }
           } catch (err) {
               // This error code indicates that the chain has not been added to MetaMask.
@@ -342,12 +339,7 @@ function HomePage() {
         }
         else{
           if(address== ""){
-            await prov.request({
-              method: "wallet_requestPermissions",
-              params: [{
-                  eth_accounts: {}
-              }]
-            });
+            
             if(addressMobile.length > 0){
               setAdress(addressMobile[0]);
               setNetName("");
@@ -366,10 +358,12 @@ function HomePage() {
             }
           }
           else{
+
             setAdress("");
             setNetName("");
             setBalance("");
             setSportBalance("");  
+            await provider.disconnect();
           }
         }
       }
