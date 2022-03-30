@@ -282,96 +282,96 @@ function HomePage() {
           });
           const addressMobile = await prov.enable();
           setAdress(addressMobile[0]);
-          var web3Window = new Web3(prov);  
-          console.log(prov.networkVersion);   
-        if (prov.networkVersion != chainId) {
-          try {
-            await prov.request({
-              method: 'wallet_switchEthereumChain',
-              //params: [{ chainId: web3.utils.toHex(chainId) }],
-              params: [{ chainId: "0x"+chainId.toString(16) }],
-            });
-            if(address== ""){
-              await prov.request({
-                method: "wallet_requestPermissions",
-                params: [{
-                    eth_accounts: {}
-                }]
-              });
-              const addressArray = await prov.request({method: "eth_accounts",});
-              if(addressArray.length > 0){
-                setAdress(addressArray[0]);
-                setNetName("");
-                web3Window.eth.getBalance(addressArray[0], (err, balanceOf) => {
-                  let balETH = ethers.utils.formatUnits(balanceOf, 'ether');        
-                  setBalance(String(balETH).substring(0, 6) + " ETH");
-                }); 
-                sportContract.methods.balanceOf(addressArray[0]).call(function (err, res) {
-                  if(res.length>7){
-                    setSportBalance(String(parseInt(String(res).substring(0,res.length-7))/100) + " SPORT");
-                  }
-                  else{
-                    setSportBalance("0.00 SPORT");
-                  }         
-                });               
-              }
-            }
-            else{
-              setAdress("");
-              setNetName("");
-              setBalance("");
-              setSportBalance("");  
-            }
-          } catch (err) {
-              // This error code indicates that the chain has not been added to MetaMask.
-            if (err.code === 4902) {
-              await prov.request({
-                method: 'wallet_addEthereumChain',
-                params: [
-                  {
-                    chainName: 'Ropsten TestNet',
-                    chainId: web3.utils.toHex(chainId),
-                    nativeCurrency: { name: 'ETH', decimals: 18, symbol: 'ETH' },
-                    rpcUrls: ['https://ropsten.infura.io/v3/'],
-                  },
-                ],
-              });
-            }
-          }
-        }
-        else{
-          if(address== ""){
-            await prov.request({
-              method: "wallet_requestPermissions",
-              params: [{
-                  eth_accounts: {}
-              }]
-            });
-            const addressArray = await prov.request({method: "eth_accounts",});
-            if(addressArray.length > 0){
-              setAdress(addressArray[0]);
-              setNetName("");
-              web3Window.eth.getBalance(addressArray[0], (err, balanceOf) => {
-                let balETH = ethers.utils.formatUnits(balanceOf, 'ether');        
-                setBalance(String(balETH).substring(0, 6) + " ETH");
-              }); 
-              sportContract.methods.balanceOf(addressArray[0]).call(function (err, res) {
-                if(res.length>7){
-                  setSportBalance(String(parseInt(String(res).substring(0,res.length-7))/100) + " SPORT");
-                }
-                else{
-                  setSportBalance("0.00 SPORT");
-                }         
-              });               
-            }
-          }
-          else{
-            setAdress("");
-            setNetName("");
-            setBalance("");
-            setSportBalance("");  
-          }
-        }
+         // var web3Window = new Web3(prov);  
+        //   console.log(prov.networkVersion);   
+        // if (prov.networkVersion != chainId) {
+        //   try {
+        //     await prov.request({
+        //       method: 'wallet_switchEthereumChain',
+        //       //params: [{ chainId: web3.utils.toHex(chainId) }],
+        //       params: [{ chainId: "0x"+chainId.toString(16) }],
+        //     });
+        //     if(address== ""){
+        //       await prov.request({
+        //         method: "wallet_requestPermissions",
+        //         params: [{
+        //             eth_accounts: {}
+        //         }]
+        //       });
+        //       const addressArray = await prov.request({method: "eth_accounts",});
+        //       if(addressArray.length > 0){
+        //         setAdress(addressArray[0]);
+        //         setNetName("");
+        //         web3Window.eth.getBalance(addressArray[0], (err, balanceOf) => {
+        //           let balETH = ethers.utils.formatUnits(balanceOf, 'ether');        
+        //           setBalance(String(balETH).substring(0, 6) + " ETH");
+        //         }); 
+        //         sportContract.methods.balanceOf(addressArray[0]).call(function (err, res) {
+        //           if(res.length>7){
+        //             setSportBalance(String(parseInt(String(res).substring(0,res.length-7))/100) + " SPORT");
+        //           }
+        //           else{
+        //             setSportBalance("0.00 SPORT");
+        //           }         
+        //         });               
+        //       }
+        //     }
+        //     else{
+        //       setAdress("");
+        //       setNetName("");
+        //       setBalance("");
+        //       setSportBalance("");  
+        //     }
+        //   } catch (err) {
+        //       // This error code indicates that the chain has not been added to MetaMask.
+        //     if (err.code === 4902) {
+        //       await prov.request({
+        //         method: 'wallet_addEthereumChain',
+        //         params: [
+        //           {
+        //             chainName: 'Ropsten TestNet',
+        //             chainId: web3.utils.toHex(chainId),
+        //             nativeCurrency: { name: 'ETH', decimals: 18, symbol: 'ETH' },
+        //             rpcUrls: ['https://ropsten.infura.io/v3/'],
+        //           },
+        //         ],
+        //       });
+        //     }
+        //   }
+        // }
+        // else{
+        //   if(address== ""){
+        //     await prov.request({
+        //       method: "wallet_requestPermissions",
+        //       params: [{
+        //           eth_accounts: {}
+        //       }]
+        //     });
+        //     const addressArray = await prov.request({method: "eth_accounts",});
+        //     if(addressArray.length > 0){
+        //       setAdress(addressArray[0]);
+        //       setNetName("");
+        //       web3Window.eth.getBalance(addressArray[0], (err, balanceOf) => {
+        //         let balETH = ethers.utils.formatUnits(balanceOf, 'ether');        
+        //         setBalance(String(balETH).substring(0, 6) + " ETH");
+        //       }); 
+        //       sportContract.methods.balanceOf(addressArray[0]).call(function (err, res) {
+        //         if(res.length>7){
+        //           setSportBalance(String(parseInt(String(res).substring(0,res.length-7))/100) + " SPORT");
+        //         }
+        //         else{
+        //           setSportBalance("0.00 SPORT");
+        //         }         
+        //       });               
+        //     }
+        //   }
+        //   else{
+        //     setAdress("");
+        //     setNetName("");
+        //     setBalance("");
+        //     setSportBalance("");  
+        //   }
+        // }
 
       }
     }
