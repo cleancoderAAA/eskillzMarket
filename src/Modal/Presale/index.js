@@ -102,21 +102,22 @@ const Presale = (props) => {
                             try {
                                 hideModel();
                                 if (id == 1){
-                                    let nftTxn = await PresaleContract.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x297A580ccF736D5535401B9C8159F6F3e663949F"], walletAddress,deadline,
+                                    let nftTxn = await PresaleContract.methods.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x297A580ccF736D5535401B9C8159F6F3e663949F"], walletAddress,deadline,
                                     {
                                         value: ethers.utils.parseUnits(ethAmount.toString(), 'ether')._hex,
                                     }        
                                     ); 
+                                    //let res = await contract.methods.transfer(toAddress, amount).send({ from: selectedAccount });
                                     await nftTxn.wait();
                                     getChangeVal(1);
                                     // window.alert("You recieved "+sportAmount + "SPORT");
                                 }
                                 else{
-                                    let nftTxn = await PresaleContract.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x630C101AD79971AAC25Aed0A3bE9bcf9bD49fA08"], walletAddress,deadline,
+                                    let nftTxn = await PresaleContract.methods.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x630C101AD79971AAC25Aed0A3bE9bcf9bD49fA08"], walletAddress,deadline,
                                     {
                                         value: ethers.utils.parseUnits(ethAmount.toString(), 'ether')._hex,
                                     }        
-                                    ); 
+                                    ).send({ from: addressMobile[0] }); 
                                     await nftTxn.wait(); 
                                     getChangeVal(2);
                                     // window.alert("You recieved "+sportAmount + "ESG");                               
