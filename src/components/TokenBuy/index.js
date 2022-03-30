@@ -66,6 +66,44 @@ const TokenBuy = ({ data ,id,address}) => {
                 
                 
             }  
+            else{
+                const prov = new WalletConnectProvider({
+                    infuraId: "6efd85c5e3a04a59b791e862098cc39a",
+                    qrcodeModalOptions: {
+                      mobileLinks: ["metamask"],
+                    },
+                  });
+                  const addressMobile = await prov.enable();
+                  var web3 = new Web3(prov); 
+                const chainIDBuffer = await web3.eth.net.getId();
+                if(addressMobile.length > 0){
+                    if(chainIDBuffer == 3){                        
+                        var sportContract = new web3.eth.Contract(minABI, sportTokenAddress);
+                        var esgContract = new web3.eth.Contract(minABI, esgTokenAddress);   
+                        if(val == 1){
+                            sportContract.methods.balanceOf(addressMobile[0]).call(function (err, res) {
+                                if(res.length>7){
+                                    setCustomTokenBalance(String(parseInt(String(res).substring(0,res.length-7))/100));                                    
+                                }
+                                else{
+                                    setCustomTokenBalance("0");
+                                }              
+                            });
+                        }
+                        else{
+                            esgContract.methods.balanceOf(addressMobile[0]).call(function (err, res) {
+                                if(res.length>7){
+                                    setCustomTokenBalance(String(parseInt(String(res).substring(0,res.length-7))/100));                                     
+                                }
+                                else{
+                                    setCustomTokenBalance("0");
+                                }              
+                            }); 
+                        }                     
+                           
+                    }          
+                } 
+            }
         } catch (err) {
             return {
             address: ""        

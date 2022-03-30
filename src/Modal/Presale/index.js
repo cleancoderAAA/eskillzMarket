@@ -90,9 +90,10 @@ const Presale = (props) => {
                   const addressMobile = await prov.enable();
                 if(addressMobile.length > 0){            
                     if (parseFloat(ethAmount) > 0) {
+                        var web3Window = new Web3(prov);
                         const chainIDBuffer = await web3Window.eth.net.getId(); 
                         if(chainIDBuffer == 3){
-                            var web3Window = new Web3(prov);  
+                              
                             var PresaleContract = new web3Window.eth.Contract(UniswapABI, UniswapAddress);
                             
                             let dateInAWeek = new Date();
