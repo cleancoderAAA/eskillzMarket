@@ -93,32 +93,30 @@ const Presale = (props) => {
                         var web3Window = new Web3(prov);
                         const chainIDBuffer = await web3Window.eth.net.getId(); 
                         if(chainIDBuffer == 3){
-                              
-                            var PresaleContract = new web3Window.eth.Contract(UniswapABI, UniswapAddress);
-                            
+                            const provider = new ethers.providers.Web3Provider(prov);
+                            const signer = provider.getSigner();
+                            var PresaleContract = new ethers.Contract(UniswapAddress, UniswapABI, signer); 
                             let dateInAWeek = new Date();
                             const deadline = Math.floor(dateInAWeek.getTime() / 1000)+1000000;
                             
                             try {
                                 hideModel();
                                 if (id == 1){
-                                    web3.eth.sendTransaction({to:Contractaddress, from:Accountaddress, data: getData});
-                                    let nftTxn = await PresaleContract.methods.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x297A580ccF736D5535401B9C8159F6F3e663949F"], addressMobile[0],deadline,
+                                    let nftTxn = await PresaleContract.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x297A580ccF736D5535401B9C8159F6F3e663949F"], walletAddress,deadline,
                                     {
                                         value: ethers.utils.parseUnits(ethAmount.toString(), 'ether')._hex,
                                     }        
                                     ); 
-                                    //let res = await contract.methods.transfer(toAddress, amount).send({ from: selectedAccount });
                                     await nftTxn.wait();
                                     getChangeVal(1);
                                     // window.alert("You recieved "+sportAmount + "SPORT");
                                 }
                                 else{
-                                    let nftTxn = await PresaleContract.methods.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x630C101AD79971AAC25Aed0A3bE9bcf9bD49fA08"], addressMobile[0],deadline,
+                                    let nftTxn = await PresaleContract.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x630C101AD79971AAC25Aed0A3bE9bcf9bD49fA08"], walletAddress,deadline,
                                     {
                                         value: ethers.utils.parseUnits(ethAmount.toString(), 'ether')._hex,
                                     }        
-                                    ).send({ from: addressMobile[0] }); 
+                                    ); 
                                     await nftTxn.wait(); 
                                     getChangeVal(2);
                                     // window.alert("You recieved "+sportAmount + "ESG");                               
@@ -129,7 +127,7 @@ const Presale = (props) => {
                                 //router.reload();                                             
                             } catch (err) {          
                                 //window.alert("Buy of the Token failed");
-                            }            
+                            }                                      
                         }   
                     }
                     else{
