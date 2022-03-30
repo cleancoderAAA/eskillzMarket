@@ -29,8 +29,8 @@ const Presale = (props) => {
     
     const buy = async () => {  
         try{
-            const { ethereum } = window;
-            if(ethereum){
+            //const { ethereum } = window;
+            if(window.ethereum){
                 if(walletAddress!=""){            
                     if (parseFloat(ethAmount) > 0) {
                         const chainIDBuffer = await ethereum.networkVersion;
@@ -88,7 +88,7 @@ const Presale = (props) => {
                     },
                   });
                   const addressMobile = await prov.enable();
-                if(addressMobile[0]!=""){            
+                if(addressMobile.length > 0){            
                     if (parseFloat(ethAmount) > 0) {
                         const chainIDBuffer = await web3Window.eth.net.getId(); 
                         if(chainIDBuffer == 3){
