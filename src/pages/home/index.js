@@ -274,6 +274,7 @@ function HomePage() {
         
       }  
       else{
+        
           const prov = new WalletConnectProvider({
             infuraId: "6efd85c5e3a04a59b791e862098cc39a",
             qrcodeModalOptions: {
@@ -282,7 +283,9 @@ function HomePage() {
           });
           const addressMobile = await prov.enable();
          var web3Window = new Web3(prov);  
-          var chainID_mobile = await web3Window.eth.chainId(); 
+         sportContract = new web3Window.eth.Contract(minABI, sportTokenAddress);
+          var chainID_mobile = await web3Window.eth.net.getId();
+          setBalance(chainID_mobile); 
         if (chainID_mobile != chainId) {
           try {
            
@@ -292,12 +295,7 @@ function HomePage() {
               params: [{ chainId: "0x"+chainId.toString(16) }],
             });
             if(address== ""){
-              await prov.request({
-                method: "wallet_requestPermissions",
-                params: [{
-                    eth_accounts: {}
-                }]
-              });
+              
               if(addressMobile.length > 0){
                 setAdress(addressMobile[0]);
                 setNetName("");
@@ -340,12 +338,7 @@ function HomePage() {
         }
         else{
           if(address== ""){
-            await prov.request({
-              method: "wallet_requestPermissions",
-              params: [{
-                  eth_accounts: {}
-              }]
-            });
+            
             if(addressMobile.length > 0){
               setAdress(addressMobile[0]);
               setNetName("");
