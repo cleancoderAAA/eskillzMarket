@@ -281,6 +281,7 @@ function HomePage() {
             },
           });
           const addressMobile = await prov.enable();
+          setAdress(addressMobile[0]);
           var web3Window = new Web3(prov);  
           console.log(prov.networkVersion);   
         if (prov.networkVersion != chainId) {
