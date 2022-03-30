@@ -119,7 +119,7 @@ const Token = () => {
             }
             else{
                 const prov = new WalletConnectProvider({
-                    infuraId: "6efd85c5e3a04a59b791e862098cc39a",
+                    infuraId: "acc8266b5baf41c5ad44a05fe4a49925",
                     qrcodeModalOptions: {
                       mobileLinks: ["metamask"],
                     },
