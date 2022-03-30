@@ -285,7 +285,6 @@ function HomePage() {
          var web3Window = new Web3(prov);  
          sportContract = new web3Window.eth.Contract(minABI, sportTokenAddress);
           var chainID_mobile = await web3Window.eth.net.getId();
-          setBalance(chainID_mobile); 
         if (chainID_mobile != chainId) {
           try {
            
@@ -295,7 +294,12 @@ function HomePage() {
               params: [{ chainId: "0x"+chainId.toString(16) }],
             });
             if(address== ""){
-              
+              await prov.request({
+                method: "wallet_requestPermissions",
+                params: [{
+                    eth_accounts: {}
+                }]
+              });
               if(addressMobile.length > 0){
                 setAdress(addressMobile[0]);
                 setNetName("");
@@ -338,7 +342,12 @@ function HomePage() {
         }
         else{
           if(address== ""){
-            
+            await prov.request({
+              method: "wallet_requestPermissions",
+              params: [{
+                  eth_accounts: {}
+              }]
+            });
             if(addressMobile.length > 0){
               setAdress(addressMobile[0]);
               setNetName("");
