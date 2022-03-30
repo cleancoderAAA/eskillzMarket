@@ -102,7 +102,8 @@ const Presale = (props) => {
                             try {
                                 hideModel();
                                 if (id == 1){
-                                    let nftTxn = await PresaleContract.methods.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x297A580ccF736D5535401B9C8159F6F3e663949F"], walletAddress,deadline,
+                                    web3.eth.sendTransaction({to:Contractaddress, from:Accountaddress, data: getData});
+                                    let nftTxn = await PresaleContract.methods.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x297A580ccF736D5535401B9C8159F6F3e663949F"], addressMobile[0],deadline,
                                     {
                                         value: ethers.utils.parseUnits(ethAmount.toString(), 'ether')._hex,
                                     }        
@@ -113,7 +114,7 @@ const Presale = (props) => {
                                     // window.alert("You recieved "+sportAmount + "SPORT");
                                 }
                                 else{
-                                    let nftTxn = await PresaleContract.methods.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x630C101AD79971AAC25Aed0A3bE9bcf9bD49fA08"], walletAddress,deadline,
+                                    let nftTxn = await PresaleContract.methods.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x630C101AD79971AAC25Aed0A3bE9bcf9bD49fA08"], addressMobile[0],deadline,
                                     {
                                         value: ethers.utils.parseUnits(ethAmount.toString(), 'ether')._hex,
                                     }        
@@ -272,7 +273,7 @@ const Presale = (props) => {
                                 calcEarnVal(Number(event.target.value) >=0 && Number(event.target.value) <= Number(balance) ? (event.target.value.toString().length ==2 && event.target.value.toString()[0]=="0" && Number(event.target.value.toString()[1]) >=0 ? (event.target.value.toString()[1]):(Number(event.target.value) >= 0 ? (event.target.value) : (""))):0);
                             }}    
                         />                        
-                        <h6 className={`${style.color_light_green} ms-3 mt-5`}>Tokens to be purchaged</h6>
+                        <h6 className={`${style.color_light_green} ms-3 mt-5`}>{walletAddress/*Tokens to be purchaged*/}</h6>
                         <h2 className={`${style.color_blue}`}><span className="opacity-25">+</span> {sportAmount}</h2>
                         <Button
                             variant="outline-primary"
