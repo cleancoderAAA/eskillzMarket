@@ -141,9 +141,9 @@ const Token = () => {
                         )
                     }
                 </div>
-                <div className={style.calc_container}>
+                {/* <div className={style.calc_container}>
                     <Calculator />
-                </div>
+                </div> */}
             </div>
         </div>
     )

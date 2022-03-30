@@ -8,7 +8,7 @@ const distributeAddress = "0x93ed733aE86FB5DecCBB3E2660bfCEcf1788FC73";
 import distributeeABI from '../../Distribute.json';
 const Calculator = ({price}) => {
     const [value, setValue] = useState(1);
-    const [amount, setAmount] = useState(416);
+    const [amount, setAmount] = useState(0);
     const [lastAmount, setLastAmount] = useState(0);
     const [earning, setEarning] = useState(Number(price)*amount);
     const [sliderVal,setSliderVal] = useState(1);

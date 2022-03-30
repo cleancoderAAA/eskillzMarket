@@ -275,7 +275,7 @@ function HomePage() {
       }  
       else{
           const prov = new WalletConnectProvider({
-            infuraId: "",
+            infuraId: "6efd85c5e3a04a59b791e862098cc39a",
             qrcodeModalOptions: {
               mobileLinks: ["metamask"],
             },
