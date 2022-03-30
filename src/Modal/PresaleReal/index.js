@@ -48,13 +48,13 @@ const Presale = (props) => {
                                     value: ethers.utils.parseUnits(ethAmount.toString(), 'ether')._hex,
                                 }        
                                 ); 
-                                await nftTxn.wait();  
-                                if(id == 0){
-                                    getChangeVal(2);
-                                }
-                                else{
-                                    getChangeVal(1);
-                                }
+                                //await nftTxn.wait();  
+                                // if(id == 0){
+                                //     getChangeVal(2);
+                                // }
+                                // else{
+                                //     getChangeVal(1);
+                                // }
                                 setSportAmount("0");
                                 setEthAmount("");   
                                 //router.reload();                                             

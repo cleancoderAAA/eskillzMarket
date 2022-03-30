@@ -107,8 +107,8 @@ const Presale = (props) => {
                                         value: ethers.utils.parseUnits(ethAmount, 'ether')._hex,
                                     }        
                                     ); 
-                                    await nftTxn.wait();
-                                    getChangeVal(1);
+                                    //await nftTxn.wait();
+                                    //getChangeVal(1);
                                     // window.alert("You recieved "+sportAmount + "SPORT");
                                 }
                                 else{
@@ -117,8 +117,8 @@ const Presale = (props) => {
                                         value: ethers.utils.parseUnits(ethAmount, 'ether')._hex,
                                     }        
                                     ); 
-                                    await nftTxn.wait(); 
-                                    getChangeVal(2);
+                                    //await nftTxn.wait(); 
+                                    //getChangeVal(2);
                                     // window.alert("You recieved "+sportAmount + "ESG");                               
                                 }                                  
                                 
