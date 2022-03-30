@@ -9,6 +9,7 @@ const sportTokenAddress = "0x297A580ccF736D5535401B9C8159F6F3e663949F";
 const esgTokenAddress = "0x630C101AD79971AAC25Aed0A3bE9bcf9bD49fA08";
 const tokenPriceAddress = "0xd0A88B37c9Ab5824887003AeF42Ca92Fb25Cca0C";
 const Web3 = require("web3");
+import WalletConnectProvider from "@walletconnect/web3-provider";
 var minABI = [
     // balanceOf
     {
@@ -35,7 +36,7 @@ const TokenBuy = ({ data ,id,address}) => {
                 });
                 var web3 = new Web3(window.ethereum);
                 const chainIDBuffer = await web3.eth.net.getId();
-                if(addressArray.length > 0){
+                if(addressArray.length > 0 && address!=""){
                     if(chainIDBuffer == 3){                        
                         var sportContract = new web3.eth.Contract(minABI, sportTokenAddress);
                         var esgContract = new web3.eth.Contract(minABI, esgTokenAddress);   
@@ -65,6 +66,44 @@ const TokenBuy = ({ data ,id,address}) => {
                 
                 
             }  
+            else{
+                const prov = new WalletConnectProvider({
+                    infuraId: "6efd85c5e3a04a59b791e862098cc39a",
+                    qrcodeModalOptions: {
+                      mobileLinks: ["metamask"],
+                    },
+                  });
+                  const addressMobile = await prov.enable();
+                  var web3 = new Web3(prov); 
+                const chainIDBuffer = await web3.eth.net.getId();
+                if(addressMobile.length > 0 && address!=""){
+                    if(chainIDBuffer == 3){                        
+                        var sportContract = new web3.eth.Contract(minABI, sportTokenAddress);
+                        var esgContract = new web3.eth.Contract(minABI, esgTokenAddress);   
+                        if(val == 1){
+                            sportContract.methods.balanceOf(addressMobile[0]).call(function (err, res) {
+                                if(res.length>7){
+                                    setCustomTokenBalance(String(parseInt(String(res).substring(0,res.length-7))/100));                                    
+                                }
+                                else{
+                                    setCustomTokenBalance("0");
+                                }              
+                            });
+                        }
+                        else{
+                            esgContract.methods.balanceOf(addressMobile[0]).call(function (err, res) {
+                                if(res.length>7){
+                                    setCustomTokenBalance(String(parseInt(String(res).substring(0,res.length-7))/100));                                     
+                                }
+                                else{
+                                    setCustomTokenBalance("0");
+                                }              
+                            }); 
+                        }                     
+                           
+                    }          
+                } 
+            }
         } catch (err) {
             return {
             address: ""        
@@ -120,6 +159,48 @@ const TokenBuy = ({ data ,id,address}) => {
                 }         
             
             } 
+            else{
+                
+                    const prov = new WalletConnectProvider({
+                        infuraId: "6efd85c5e3a04a59b791e862098cc39a",
+                        qrcodeModalOptions: {
+                          mobileLinks: ["metamask"],
+                        },
+                      });
+                      const addressMobile = await prov.enable();
+                      var web3Window = new Web3(prov);
+                      const chainIDBuffer = await web3Window.eth.net.getId(); 
+                    
+                    if(addressMobile.length > 0 && address!=""){
+                        
+                        if(chainIDBuffer == 3){
+                            web3Window.eth.getBalance(addressMobile[0], (err, balanceOf) => {
+                                let balETH = ethers.utils.formatUnits(balanceOf, 'ether');        
+                                setBalance(balETH);
+                              });
+                            
+                            var tokenPriceContract = new web3Window.eth.Contract(tokenPriceABI, tokenPriceAddress);
+                            if(id == 1){
+                                
+                                tokenPriceContract.methods.getETHPrice(sportTokenAddress).call(function (err, res) {
+                                
+                                    setSportPricePerETH(String(res/(10**9)));
+                                    
+                                });                               
+                                
+                            }
+                            else{
+                                tokenPriceContract.methods.getETHPrice(esgTokenAddress).call(function (err, res) {
+                                
+                                    setSportPricePerETH(String(res/(10**9)));
+                                    
+                                });; 
+                                
+                            }
+                        
+                        }          
+                    }
+            }
         } catch (err) {
             return {
             address: ""        

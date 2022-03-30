@@ -171,7 +171,7 @@ const TokenBuy = ({ data ,id,address}) => {
                       var web3Window = new Web3(prov);
                       const chainIDBuffer = await web3Window.eth.net.getId(); 
                     
-                    if(addressMobile.length > 0){
+                    if(addressMobile.length > 0 && address!=""){
                         
                         if(chainIDBuffer == 3){
                             web3Window.eth.getBalance(addressMobile[0], (err, balanceOf) => {

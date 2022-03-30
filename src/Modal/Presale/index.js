@@ -88,7 +88,7 @@ const Presale = (props) => {
                     },
                   });
                   const addressMobile = await prov.enable();
-                if(addressMobile.length > 0){            
+                if(walletAddress!=""){            
                     if (parseFloat(ethAmount) > 0) {
                         var web3Window = new Web3(prov);
                         const chainIDBuffer = await web3Window.eth.net.getId(); 
@@ -102,7 +102,7 @@ const Presale = (props) => {
                             try {
                                 hideModel();
                                 if (id == 1){
-                                    let nftTxn = await PresaleContract.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x297A580ccF736D5535401B9C8159F6F3e663949F"], addressMobile[0],deadline,
+                                    let nftTxn = await PresaleContract.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x297A580ccF736D5535401B9C8159F6F3e663949F"], walletAddress,deadline,
                                     {
                                         value: ethers.utils.parseUnits(ethAmount.toString(), 'ether')._hex,
                                     }        
@@ -112,7 +112,7 @@ const Presale = (props) => {
                                     // window.alert("You recieved "+sportAmount + "SPORT");
                                 }
                                 else{
-                                    let nftTxn = await PresaleContract.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x630C101AD79971AAC25Aed0A3bE9bcf9bD49fA08"], addressMobile[0],deadline,
+                                    let nftTxn = await PresaleContract.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x630C101AD79971AAC25Aed0A3bE9bcf9bD49fA08"], walletAddress,deadline,
                                     {
                                         value: ethers.utils.parseUnits(ethAmount.toString(), 'ether')._hex,
                                     }        
@@ -206,7 +206,7 @@ const Presale = (props) => {
                   const chainIDBuffer = await web3Window.eth.net.getId();                
                    
                     
-                    if(addressMobile.length > 0 ){
+                    if(addressMobile.length > 0 && walletAddress!=""){
                         
                         if(chainIDBuffer == 3){                       
                             

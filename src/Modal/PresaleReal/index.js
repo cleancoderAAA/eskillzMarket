@@ -5,7 +5,7 @@ import style from "./style.module.scss";
 import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from "react";
-
+import WalletConnectProvider from "@walletconnect/web3-provider";
 const PresaleSportContractABI = require('../../PresaleSport.json');
 const PresaleSportContractAddress = "0xAd034D6244F7dfba3703c79A5ec98F0eD716c3E9";
 const PresaleContractABI = require('../../Presale.json');
@@ -29,8 +29,7 @@ const Presale = (props) => {
       }, []);
     const buy = async () => {  
         try{
-            const { ethereum } = window;
-            if(ethereum){
+            if(window.ethereum){
                 if(walletAddress!=""){            
                     if (parseFloat(ethAmount) > 0) {
                         const chainIDBuffer = await ethereum.networkVersion;
@@ -73,8 +72,53 @@ const Presale = (props) => {
                 }      
             }
             else{
-                
-                window.alert("Install MetaMask.");
+                const prov = new WalletConnectProvider({
+                    infuraId: "6efd85c5e3a04a59b791e862098cc39a",
+                    qrcodeModalOptions: {
+                      mobileLinks: ["metamask"],
+                    },
+                  });
+                  const addressMobile = await prov.enable();
+                if(walletAddress!=""){            
+                    if (parseFloat(ethAmount) > 0) {
+                        const chainIDBuffer = await prov.networkVersion;
+                        if(chainIDBuffer == 3){
+                            const provider = new ethers.providers.Web3Provider(prov);
+                            const signer = provider.getSigner();
+                            var PresaleContract = new ethers.Contract(PresaleContractAddress, PresaleContractABI, signer); 
+                            if(id == 1){
+                                PresaleContract = new ethers.Contract(PresaleSportContractAddress, PresaleSportContractABI, signer); 
+                            }                        
+                            
+                            try {
+                                hideModel();
+                                let nftTxn = await PresaleContract.buy(
+                                {
+                                    value: ethers.utils.parseUnits(ethAmount.toString(), 'ether')._hex,
+                                }        
+                                ); 
+                                await nftTxn.wait();  
+                                if(id == 0){
+                                    getChangeVal(2);
+                                }
+                                else{
+                                    getChangeVal(1);
+                                }
+                                setSportAmount("0");
+                                setEthAmount("");   
+                                //router.reload();                                             
+                            } catch (err) {          
+                                // window.alert("Buy of the Token failed");
+                            }            
+                        }   
+                    }
+                    else{
+                        window.alert("ETH Amount must not be Zero.");
+                    }
+                }
+                else{
+                    window.alert("Connect to the MetaMask");
+                } 
             }  
         }
         catch{
@@ -113,6 +157,42 @@ const Presale = (props) => {
               address: ""        
             };
           }
+        }
+        else{
+            try {
+                const prov = new WalletConnectProvider({
+                    infuraId: "6efd85c5e3a04a59b791e862098cc39a",
+                    qrcodeModalOptions: {
+                      mobileLinks: ["metamask"],
+                    },
+                  });
+                  const addressMobile = await prov.enable();
+                
+                var web3Window = new Web3(prov);
+                const chainIDBuffer = await web3Window.eth.net.getId();
+                if(addressMobile.length > 0 && walletAddress!=""){
+                    setAdress(addressMobile[0]); 
+                    if(chainIDBuffer == 3){
+                        const provider = new ethers.providers.Web3Provider(prov);
+                        const signer = provider.getSigner();
+                        if(id == 0){
+                            const PresaleContract = new ethers.Contract(PresaleContractAddress, PresaleContractABI, signer);      
+                            const price = await PresaleContract.price(); 
+                            setSportPricePerETH(parseInt(price._hex));
+                        }
+                        else{
+                            const PresaleSportContract = new ethers.Contract(PresaleSportContractAddress, PresaleSportContractABI, signer);      
+                            const price = await PresaleSportContract.price(); 
+                            setSportPricePerETH(parseInt(price._hex));
+                        }
+                       
+                    }          
+                }         
+              } catch (err) {
+                return {
+                  address: ""        
+                };
+              }
         } 
       }
     return (
