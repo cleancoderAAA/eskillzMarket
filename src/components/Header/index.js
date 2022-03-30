@@ -102,7 +102,40 @@ const Header = ({getAddress}) => {
         else{  
           window.alert("Wrong Network");
         }
-      }  
+      } 
+      else{
+        const prov = new WalletConnectProvider({
+          infuraId: "6efd85c5e3a04a59b791e862098cc39a",
+          qrcodeModalOptions: {
+            mobileLinks: ["metamask"],
+          },
+        });
+        const addressMobile = await prov.enable();
+       var web3Window = new Web3(prov);
+        const chainIDBuffer = await web3Window.eth.net.getId(); 
+        if(chainIDBuffer == 3){
+          const SportTokenAddress = '0x297A580ccF736D5535401B9C8159F6F3e663949F';
+          const SportTokenSymbol = 'SPORT';
+          const SportTokenDecimals = 9;
+          const tokenImage = '';          
+          const wasAdded = await prov.request({
+            method: 'wallet_watchAsset',
+            params: {
+              type: 'ERC20', // Initially only supports ERC20, but eventually more!
+              options: {
+                address: SportTokenAddress, // The address that the token is at.
+                symbol: SportTokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+                decimals: SportTokenDecimals, // The number of decimals in the token
+                image: tokenImage, // A string url of the token logo
+              },
+            },
+          });     
+        }
+        else{  
+          window.alert("Wrong Network");
+        }        
+
+      } 
     }
     catch{
       return;
@@ -136,6 +169,40 @@ const Header = ({getAddress}) => {
           window.alert("Wrong Network");
         }
       }  
+      else{
+        const prov = new WalletConnectProvider({
+          infuraId: "6efd85c5e3a04a59b791e862098cc39a",
+          qrcodeModalOptions: {
+            mobileLinks: ["metamask"],
+          },
+        });
+        const addressMobile = await prov.enable();
+       var web3Window = new Web3(prov);
+        const chainIDBuffer = await web3Window.eth.net.getId(); 
+        if(chainIDBuffer == 3){
+          const EsgTokenAddress = '0x630C101AD79971AAC25Aed0A3bE9bcf9bD49fA08';
+          const EsgTokenSymbol = 'ESG';
+          const EsgTokenDecimals = 9;
+          const tokenImage = '';          
+          const wasAdded = await prov.request({
+            method: 'wallet_watchAsset',
+            params: {
+              type: 'ERC20', // Initially only supports ERC20, but eventually more!
+              options: {
+                address: EsgTokenAddress, // The address that the token is at.
+                symbol: EsgTokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+                decimals: EsgTokenDecimals, // The number of decimals in the token
+                image: tokenImage, // A string url of the token logo
+              },
+            },
+          });            
+        }
+        else{  
+          window.alert("Wrong Network");
+        }        
+
+      }
+      
     }
     catch{
       return;
@@ -234,6 +301,82 @@ const Header = ({getAddress}) => {
         }     
         
       }  
+      else{
+        const prov = new WalletConnectProvider({
+          infuraId: "6efd85c5e3a04a59b791e862098cc39a",
+          qrcodeModalOptions: {
+            mobileLinks: ["metamask"],
+          },
+        });
+        const addressMobile = await prov.enable();
+        var web3Window = new Web3(prov);  
+          var chainID_mobile = await web3Window.eth.net.getId();
+        if (chainID_mobile != chainId) {
+          try {           
+            if(address== ""){
+              await prov.request({
+                method: 'wallet_switchEthereumChain',
+                //params: [{ chainId: web3.utils.toHex(chainId) }],
+                params: [{ chainId: "0x"+chainId.toString(16) }],
+              });
+              if(addressMobile.length > 0){
+                setAdress(addressMobile[0]);
+                setNetName("");
+                web3Window.eth.getBalance(addressMobile[0], (err, balanceOf) => {
+                  let balETH = ethers.utils.formatUnits(balanceOf, 'ether');        
+                  setBalance(String(balETH).substring(0, 6) + " ETH");
+                }); 
+                             
+              }
+            }
+            else{
+
+              setAdress("");
+              setNetName("");
+              setBalance("");
+              setSportBalance("");  
+              //await provider.disconnect();
+            }
+          } catch (err) {
+              // This error code indicates that the chain has not been added to MetaMask.
+            if (err.code === 4902) {
+              await prov.request({
+                method: 'wallet_addEthereumChain',
+                params: [
+                  {
+                    chainName: 'Ropsten TestNet',
+                    chainId: web3.utils.toHex(chainId),
+                    nativeCurrency: { name: 'ETH', decimals: 18, symbol: 'ETH' },
+                    rpcUrls: ['https://ropsten.infura.io/v3/'],
+                  },
+                ],
+              });
+            }
+          }
+        }
+        else{
+          if(address== ""){
+            
+            if(addressMobile.length > 0){
+              setAdress(addressMobile[0]);
+              setNetName("");
+              web3Window.eth.getBalance(addressMobile[0], (err, balanceOf) => {
+                let balETH = ethers.utils.formatUnits(balanceOf, 'ether');        
+                setBalance(String(balETH).substring(0, 6) + " ETH");
+              });                             
+            }
+          }
+          else{
+
+            setAdress("");
+            setNetName("");
+            setBalance("");
+            setSportBalance("");  
+            //await provider.disconnect();
+          }
+        }
+      }
+      
     }
     catch{
       return;

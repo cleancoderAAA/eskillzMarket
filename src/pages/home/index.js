@@ -286,8 +286,7 @@ function HomePage() {
          sportContract = new web3Window.eth.Contract(minABI, sportTokenAddress);
           var chainID_mobile = await web3Window.eth.net.getId();
         if (chainID_mobile != chainId) {
-          try {
-           
+          try {           
             if(address== ""){
               await prov.request({
                 method: 'wallet_switchEthereumChain',
