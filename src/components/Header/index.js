@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import style from "../../pages/token/style.module.scss";
 import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
+import WalletConnectProvider from "@walletconnect/web3-provider";
 const Web3 = require("web3");
 
 const Header = ({getAddress}) => {
@@ -333,8 +334,7 @@ const Header = ({getAddress}) => {
 
               setAdress("");
               setNetName("");
-              setBalance("");
-              setSportBalance("");  
+              
               //await provider.disconnect();
             }
           } catch (err) {
@@ -370,8 +370,7 @@ const Header = ({getAddress}) => {
 
             setAdress("");
             setNetName("");
-            setBalance("");
-            setSportBalance("");  
+            
             //await provider.disconnect();
           }
         }

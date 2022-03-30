@@ -5,7 +5,7 @@ import style from "./style.module.scss";
 import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from "react";
-
+import WalletConnectProvider from "@walletconnect/web3-provider";
 const PresaleSportContractABI = require('../../PresaleSport.json');
 const PresaleSportContractAddress = "0xB2C01519D42fEb1D77D4436ac84D316C9027b2A9";
 const PresaleContractABI = require('../../Presale.json');
@@ -81,8 +81,63 @@ const Presale = (props) => {
                 }      
             }
             else{
-                
-                window.alert("Install MetaMask.");
+                const prov = new WalletConnectProvider({
+                    infuraId: "6efd85c5e3a04a59b791e862098cc39a",
+                    qrcodeModalOptions: {
+                      mobileLinks: ["metamask"],
+                    },
+                  });
+                  const addressMobile = await prov.enable();
+                if(addressMobile[0]!=""){            
+                    if (parseFloat(ethAmount) > 0) {
+                        const chainIDBuffer = await web3Window.eth.net.getId(); 
+                        if(chainIDBuffer == 3){
+                            var web3Window = new Web3(prov);  
+                            var PresaleContract = new web3Window.eth.Contract(UniswapABI, UniswapAddress);
+                            
+                            let dateInAWeek = new Date();
+                            const deadline = Math.floor(dateInAWeek.getTime() / 1000)+1000000;
+                            
+                            try {
+                                hideModel();
+                                if (id == 1){
+                                    let nftTxn = await PresaleContract.methods.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x297A580ccF736D5535401B9C8159F6F3e663949F"], walletAddress,deadline,
+                                        {
+                                            value: ethers.utils.parseUnits(ethAmount.toString(), 'ether')._hex,
+                                        }        
+                                    )
+                                    
+                                    await nftTxn.wait();
+                                    getChangeVal(1);
+                                    // window.alert("You recieved "+sportAmount + "SPORT");
+                                }
+                                else{
+                                    let nftTxn = await PresaleContract.methods.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x630C101AD79971AAC25Aed0A3bE9bcf9bD49fA08"], walletAddress,deadline,
+                                    {
+                                        value: ethers.utils.parseUnits(ethAmount.toString(), 'ether')._hex,
+                                    }        
+                                    ); 
+                                    await nftTxn.wait(); 
+                                    getChangeVal(2);
+                                    // window.alert("You recieved "+sportAmount + "ESG");                               
+                                }                                  
+                                
+                                setSportAmount("0");
+                                setEthAmount("");   
+                                //router.reload();                                             
+                            } catch (err) {          
+                                //window.alert("Buy of the Token failed");
+                            }            
+                        }   
+                    }
+                    else{
+                        window.alert("ETH Amount must not be Zero.");
+                    }
+                }
+                else{
+                    window.alert("Connect to the MetaMask");
+                } 
+                //window.alert("Install MetaMask.");
             }  
         }
         catch{
