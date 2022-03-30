@@ -95,7 +95,7 @@ const Presale = (props) => {
                                 hideModel();
                                 let nftTxn = await PresaleContract.buy(
                                 {
-                                    value: ethers.utils.parseUnits(ethAmount.toString(), 'ether')._hex,
+                                    value: ethers.utils.parseUnits(ethAmount, 'ether')._hex,
                                 }        
                                 ); 
                                 await nftTxn.wait();  

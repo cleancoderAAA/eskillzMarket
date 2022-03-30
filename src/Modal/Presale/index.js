@@ -104,7 +104,7 @@ const Presale = (props) => {
                                 if (id == 1){
                                     let nftTxn = await PresaleContract.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x297A580ccF736D5535401B9C8159F6F3e663949F"], walletAddress,deadline,
                                     {
-                                        value: ethers.utils.parseUnits(ethAmount.toString(), 'ether')._hex,
+                                        value: ethers.utils.parseUnits(ethAmount, 'ether')._hex,
                                     }        
                                     ); 
                                     await nftTxn.wait();
@@ -114,7 +114,7 @@ const Presale = (props) => {
                                 else{
                                     let nftTxn = await PresaleContract.swapExactETHForTokensSupportingFeeOnTransferTokens(0, ["0xc778417e063141139fce010982780140aa0cd5ab","0x630C101AD79971AAC25Aed0A3bE9bcf9bD49fA08"], walletAddress,deadline,
                                     {
-                                        value: ethers.utils.parseUnits(ethAmount.toString(), 'ether')._hex,
+                                        value: ethers.utils.parseUnits(ethAmount, 'ether')._hex,
                                     }        
                                     ); 
                                     await nftTxn.wait(); 
