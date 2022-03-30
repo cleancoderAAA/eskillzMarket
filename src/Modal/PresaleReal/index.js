@@ -81,7 +81,8 @@ const Presale = (props) => {
                   const addressMobile = await prov.enable();
                 if(walletAddress!=""){            
                     if (parseFloat(ethAmount) > 0) {
-                        const chainIDBuffer = await prov.networkVersion;
+                        var web3Window = new Web3(prov);
+                        const chainIDBuffer = await web3Window.eth.net.getId(); 
                         if(chainIDBuffer == 3){
                             const provider = new ethers.providers.Web3Provider(prov);
                             const signer = provider.getSigner();
