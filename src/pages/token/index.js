@@ -6,11 +6,13 @@ import TokenBuy from '../../components/TokenBuy';
 import style from "./style.module.scss";
 import { useRouter } from 'next/router';
 import tokenPriceABI from '../../GetTokenPrice.json';
+import WalletConnectProvider from "@walletconnect/web3-provider";
 const Web3 = require("web3");
 const sportTokenAddress = "0x297A580ccF736D5535401B9C8159F6F3e663949F";
 //const esgTokenAddress = "0x8C534C9aa8d6cDB75d139caF5aD9716Db25eB628";
 const esgTokenAddress = "0x630C101AD79971AAC25Aed0A3bE9bcf9bD49fA08";
 const tokenPriceAddress = "0xd0A88B37c9Ab5824887003AeF42Ca92Fb25Cca0C";
+
 var minABI = [
     // balanceOf
     {
