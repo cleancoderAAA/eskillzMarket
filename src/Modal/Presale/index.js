@@ -194,6 +194,9 @@ const Presale = (props) => {
                 }         
             
             } 
+            else{
+
+            }
         } catch (err) {
             return {
             address: ""        

@@ -9,6 +9,7 @@ const sportTokenAddress = "0x297A580ccF736D5535401B9C8159F6F3e663949F";
 const esgTokenAddress = "0x630C101AD79971AAC25Aed0A3bE9bcf9bD49fA08";
 const tokenPriceAddress = "0xd0A88B37c9Ab5824887003AeF42Ca92Fb25Cca0C";
 const Web3 = require("web3");
+import WalletConnectProvider from "@walletconnect/web3-provider";
 var minABI = [
     // balanceOf
     {
